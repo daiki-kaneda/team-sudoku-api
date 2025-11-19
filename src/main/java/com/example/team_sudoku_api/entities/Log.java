@@ -19,7 +19,8 @@ public class Log {
     private String result; // success,failure
 
     @ManyToOne
-    @JoinColumn(name = "user_team")
+    @JoinColumn(name = "user_id",referencedColumnName = "user_id")
+    @JoinColumn(name = "team_id",referencedColumnName = "team_id")
     private UserTeam userTeam;
 
     @ManyToOne
