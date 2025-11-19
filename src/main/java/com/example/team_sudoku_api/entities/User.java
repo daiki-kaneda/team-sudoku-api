@@ -1,5 +1,6 @@
 package com.example.team_sudoku_api.entities;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class User {
 
     private String name;
     private String email;
+    private LocalDateTime createdAt;
 
     private boolean isActive = true;
 
