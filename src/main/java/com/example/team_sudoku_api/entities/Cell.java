@@ -12,6 +12,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.Data;
 
 @Entity
@@ -28,8 +30,19 @@ public class Cell {
     @JsonIgnore
     private List<Log> log = new ArrayList<>();
 
-    private int row; // 0~8
-    private int column; // 0~8
+    @Min(value = 0)
+    @Max(value = 8)
+    private int row;
+
+    @Min(value = 0)
+    @Max(value = 8)
+    private int column;
+
+    @Min(value = 1)
+    @Max(value = 9)
     private Integer value;
+
+    @Min(value = 1)
+    @Max(value = 9)
     private int correctValue;
 }

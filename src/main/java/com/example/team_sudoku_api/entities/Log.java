@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Entity
@@ -16,6 +17,8 @@ public class Log {
     private String id;
 
     private LocalDateTime createdAt;
+
+    @NotNull
     private String result; // success,failure
 
     @ManyToOne
