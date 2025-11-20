@@ -3,6 +3,7 @@ package com.example.team_sudoku_api.entities;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -33,4 +34,14 @@ public class Team {
     @ManyToOne
     @JoinColumn(name = "board_id")
     private Board board;
+
+    public static Team create(String id, String name, Board board) {
+        Team team = new Team();
+        team.setId(id != null ? id : UUID.randomUUID().toString());
+        team.setName(name);
+        team.setBoard(board);
+        team.setCreatedAt(LocalDateTime.now());
+        team.setActive(true);
+        return team;
+    }
 }
