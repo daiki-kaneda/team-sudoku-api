@@ -26,7 +26,7 @@ public class Cell {
     private CellId id;
 
     @ManyToOne
-    @JoinColumn(name = "board_id")
+    @JoinColumn(name = "board_id",referencedColumnName = "id")
     @MapsId("boardId")
     private Board board;
 
@@ -49,9 +49,13 @@ public class Cell {
         private String boardId;
 
         @Column(name = "row")
+        @Min(value = 0)
+        @Max(value = 8)
         private int row;
 
         @Column(name = "column")
+        @Min(value = 0)
+        @Max(value = 8)
         private int column;
     }
 }

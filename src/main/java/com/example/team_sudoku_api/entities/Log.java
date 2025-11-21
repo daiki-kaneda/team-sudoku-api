@@ -27,6 +27,8 @@ public class Log {
     private UserTeam userTeam;
 
     @ManyToOne
-    @JoinColumn(name = "cell_id")
+    @JoinColumn(name = "cell_board_id",referencedColumnName = "board_id")
+    @JoinColumn(name = "cell_row",referencedColumnName = "row")
+    @JoinColumn(name = "cell_column",referencedColumnName = "column")
     private Cell cell;
 }
