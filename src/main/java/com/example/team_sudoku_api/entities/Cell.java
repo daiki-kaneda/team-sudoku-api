@@ -36,6 +36,7 @@ public class Cell {
 
     @Min(value = 1)
     @Max(value = 9)
+    @Column(name = "cell_value")
     private Integer value;
 
     @Min(value = 1)
@@ -48,12 +49,12 @@ public class Cell {
         @Column(name = "board_id")
         private String boardId;
 
-        @Column(name = "row")
+        @Column(name = "row_idx")
         @Min(value = 0)
         @Max(value = 8)
         private int row;
 
-        @Column(name = "column")
+        @Column(name = "col_idx")
         @Min(value = 0)
         @Max(value = 8)
         private int column;
