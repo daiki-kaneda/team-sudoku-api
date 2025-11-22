@@ -42,6 +42,18 @@ CREATE TABLE users (
     PRIMARY KEY (uid)
 );
 
+CREATE TABLE role (
+    id BIGINT NOT NULL,
+    role_name VARCHAR(255),
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE user_role (
+    role_id BIGINT NOT NULL,
+    user_id VARCHAR(255) NOT NULL,
+    PRIMARY KEY (role_id, user_id)
+);
+
 CREATE TABLE user_team (
     joined_at TIMESTAMP(6),
     team_id VARCHAR(255) NOT NULL,
@@ -82,5 +94,17 @@ ALTER TABLE user_team
 -- user_team (user_id) -> users (uid)
 ALTER TABLE user_team 
     ADD CONSTRAINT FK_USERTEAM_USER 
+    FOREIGN KEY (user_id) 
+    REFERENCES users(uid);
+
+-- user_role (role_id) -> role (id)
+ALTER TABLE user_role 
+    ADD CONSTRAINT FK_USERROLE_ROLE 
+    FOREIGN KEY (role_id) 
+    REFERENCES role(id);
+
+-- user_role (user_id) -> users (uid)
+ALTER TABLE user_role 
+    ADD CONSTRAINT FK_USERROLE_USER 
     FOREIGN KEY (user_id) 
     REFERENCES users(uid);
