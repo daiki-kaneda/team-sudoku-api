@@ -1,0 +1,86 @@
+CREATE TABLE board (
+    id VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE cell (
+    cell_value INTEGER CHECK (cell_value >= 1 AND cell_value <= 9),
+    col_idx INTEGER NOT NULL,
+    correct_value INTEGER NOT NULL CHECK (correct_value >= 1 AND correct_value <= 9),
+    row_idx INTEGER NOT NULL,
+    board_id VARCHAR(255) NOT NULL,
+    PRIMARY KEY (col_idx, row_idx, board_id)
+);
+
+CREATE TABLE log (
+    cell_column INTEGER,
+    cell_row INTEGER,
+    created_at TIMESTAMP(6),
+    cell_board_id VARCHAR(255),
+    id VARCHAR(255) NOT NULL,
+    result VARCHAR(255) NOT NULL,
+    team_id VARCHAR(255),
+    user_id VARCHAR(255),
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE team (
+    is_active BOOLEAN NOT NULL,
+    created_at TIMESTAMP(6),
+    name VARCHAR(20),
+    board_id VARCHAR(255),
+    id VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE users (
+    is_active BOOLEAN NOT NULL,
+    created_at TIMESTAMP(6),
+    email VARCHAR(255),
+    name VARCHAR(255),
+    uid VARCHAR(255) NOT NULL,
+    PRIMARY KEY (uid)
+);
+
+CREATE TABLE user_team (
+    joined_at TIMESTAMP(6),
+    team_id VARCHAR(255) NOT NULL,
+    user_id VARCHAR(255) NOT NULL,
+    PRIMARY KEY (team_id, user_id)
+);
+
+-- cell (board_id) -> board (id)
+ALTER TABLE cell 
+    ADD CONSTRAINT FK_CELL_BOARD
+    FOREIGN KEY (board_id) 
+    REFERENCES board(id);
+
+-- log (cell複合キー) -> cell (複合主キー)
+ALTER TABLE log 
+    ADD CONSTRAINT FK_LOG_CELL 
+    FOREIGN KEY (cell_column, cell_row, cell_board_id) 
+    REFERENCES cell(col_idx, row_idx, board_id);
+
+-- log (team_id, user_id) -> user_team (team_id, user_id)
+ALTER TABLE log 
+    ADD CONSTRAINT FK_LOG_USERTEAM
+    FOREIGN KEY (team_id, user_id) 
+    REFERENCES user_team(team_id, user_id);
+
+-- team (board_id) -> board (id)
+ALTER TABLE team 
+    ADD CONSTRAINT FK_TEAM_BOARD 
+    FOREIGN KEY (board_id) 
+    REFERENCES board(id);
+
+-- user_team (team_id) -> team (id)
+ALTER TABLE user_team 
+    ADD CONSTRAINT FK_USERTEAM_TEAM 
+    FOREIGN KEY (team_id) 
+    REFERENCES team(id);
+
+-- user_team (user_id) -> users (uid)
+ALTER TABLE user_team 
+    ADD CONSTRAINT FK_USERTEAM_USER 
+    FOREIGN KEY (user_id) 
+    REFERENCES users(uid);
