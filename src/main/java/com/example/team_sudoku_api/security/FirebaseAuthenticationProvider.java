@@ -1,7 +1,6 @@
 package com.example.team_sudoku_api.security;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -10,7 +9,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import com.example.team_sudoku_api.drivers.FirebaseAuthDriver;
-import com.example.team_sudoku_api.entities.Role;
 import com.example.team_sudoku_api.services.UserRoleService;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
