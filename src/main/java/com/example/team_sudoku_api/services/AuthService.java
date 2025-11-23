@@ -40,7 +40,7 @@ public class AuthService {
                 });
 
         UserRole userRole = new UserRole();
-        Role role = roleRepository.findByRoleName("ROLE_USER").stream().findFirst().get();
+        Role role = roleRepository.findByRoleName("ROLE_USER").get();
         userRole.setId(UserRoleId.create(uid, role.getId()));
         userRole.setUser(user);
         userRole.setRole(role);
