@@ -40,7 +40,9 @@ public class AuthService {
                 });
 
         UserRole userRole = new UserRole();
-        Role role = roleRepository.findByRoleName("ROLE_USER").get();
+        Role role = roleRepository.findByRoleName("ROLE_USER")
+                .orElseThrow(() -> new IllegalStateException("ROLE_USER not found in DB."));
+        ;
         userRole.setId(UserRoleId.create(uid, role.getId()));
         userRole.setUser(user);
         userRole.setRole(role);
