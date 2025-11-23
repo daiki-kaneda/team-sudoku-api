@@ -31,5 +31,12 @@ public class UserRole {
     public static class UserRoleId implements Serializable{
         private String userId;
         private Long roleId;
+
+        public static UserRoleId create(String userId,Long roleId){
+            UserRoleId id = new UserRoleId();
+            id.setUserId(userId);
+            id.setRoleId(roleId);
+            return id;
+        }
     }
 }
