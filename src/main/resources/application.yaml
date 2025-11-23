@@ -13,5 +13,9 @@ spring:
           format_sql: true
   flyway:
     enabled: true
+    placeholders:
+      '[admin.uid]': ${ADMIN_USER_FIREBASE_UID}
+      '[admin.name]': "System Admin"
+      '[admin.email]': "admin@example.com"
 
 
