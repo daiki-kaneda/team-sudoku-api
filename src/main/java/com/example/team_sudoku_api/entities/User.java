@@ -37,11 +37,6 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserRole> userRoles = new ArrayList<>();
 
-    public void addUserTeam(UserTeam userTeam) {
-        this.userTeams.add(userTeam);
-        userTeam.setUser(this);
-    }
-
     public void addUserRole(UserRole userRole) {
         this.userRoles.add(userRole);
         userRole.setUser(this);
