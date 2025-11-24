@@ -15,10 +15,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Data
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserTeam {
     @EmbeddedId
     private UserTeamId id;
@@ -38,12 +42,19 @@ public class UserTeam {
     @OneToMany(mappedBy = "userTeam", cascade = CascadeType.PERSIST)
     private List<Log> logs = new ArrayList<>();
 
-    @Data
     @Embeddable
+    @EqualsAndHashCode
     public static class UserTeamId implements Serializable {
         @Column(name = "user_id")
         private String userId;
         @Column(name = "team_id")
         private String teamId;
+
+        public static UserTeamId create(String userId, String teamId) {
+            UserTeamId id = new UserTeamId();
+            id.userId = userId;
+            id.teamId = teamId;
+            return id;
+        }
     }
 }

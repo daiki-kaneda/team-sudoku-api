@@ -1,6 +1,7 @@
 package com.example.team_sudoku_api.services;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,14 +36,17 @@ public class AuthService {
         String uid = token.getUid();
         User user = userRepository.findById(uid)
                 .orElseGet(() -> {
-                    User newUser = createNewUser(uid, token);
+                    User newUser = new User(
+                        uid, 
+                        token.getName(), 
+                        token.getEmail(), LocalDateTime.now(), true, 
+                        List.of(),List.of() );
                     return userRepository.save(newUser);
                 });
 
-        UserRole userRole = new UserRole();
         Role role = roleRepository.findByRoleName("ROLE_USER")
                 .orElseThrow(() -> new IllegalStateException("ROLE_USER not found in DB."));
-        ;
+        
         userRole.setId(UserRoleId.create(uid, role.getId()));
         userRole.setUser(user);
         userRole.setRole(role);
@@ -51,12 +55,12 @@ public class AuthService {
         return user;
     }
 
-    private User createNewUser(String uid, FirebaseToken token) {
-        User newUser = new User();
-        newUser.setUid(uid);
-        newUser.setName(token.getName());
-        newUser.setEmail(token.getEmail());
-        newUser.setCreatedAt(LocalDateTime.now());
-        return newUser;
-    }
+    // private User createNewUser(String uid, FirebaseToken token) {
+    //     User newUser = new User();
+    //     newUser.setUid(uid);
+    //     newUser.setName(token.getName());
+    //     newUser.setEmail(token.getEmail());
+    //     newUser.setCreatedAt(LocalDateTime.now());
+    //     return newUser;
+    // }
 }

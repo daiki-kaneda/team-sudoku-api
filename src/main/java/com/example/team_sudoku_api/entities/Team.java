@@ -3,7 +3,6 @@ package com.example.team_sudoku_api.entities;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -14,10 +13,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Data
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Team {
     @Id
     private String id;
@@ -34,14 +36,4 @@ public class Team {
     @ManyToOne
     @JoinColumn(name = "board_id")
     private Board board;
-
-    public static Team create(String id, String name, Board board) {
-        Team team = new Team();
-        team.setId(id != null ? id : UUID.randomUUID().toString());
-        team.setName(name);
-        team.setBoard(board);
-        team.setCreatedAt(LocalDateTime.now());
-        team.setActive(true);
-        return team;
-    }
 }

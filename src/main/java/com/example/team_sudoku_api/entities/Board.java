@@ -9,11 +9,14 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Data
-public class Board {
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Board extends BaseEntity<String> {
     @Id
     private String id;
 
@@ -23,4 +26,9 @@ public class Board {
     @JsonIgnore
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<Team> teams = new ArrayList<>();
+
+    @Override
+    public String getId() {
+        return id;
+    }
 }

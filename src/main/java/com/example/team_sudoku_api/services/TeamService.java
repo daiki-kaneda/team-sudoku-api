@@ -37,7 +37,7 @@ public class TeamService {
     public Team createTeamAndJoin(String uid, String name, String boardId) {
         String teamId = UUID.randomUUID().toString();
         Board board = boardRepository.findById(boardId).orElseThrow();
-        Team newTeam = Team.create(teamId, name, board);
+        Team newTeam = new Team(teamId, name, LocalDateTime.now(), true, List.of(), board);
 
         teamRepository.save(newTeam);
 
