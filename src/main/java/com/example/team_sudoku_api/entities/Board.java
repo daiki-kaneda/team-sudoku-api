@@ -20,12 +20,41 @@ public class Board extends BaseEntity<String> {
     @Id
     private String id;
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Cell> cells = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Team> teams = new ArrayList<>();
+
+    public void setAllCells(List<Cell> newCells) {
+        if (newCells.size() != 81) {
+            throw new IllegalArgumentException("Board must have exactly 81 cells");
+        }
+
+        this.cells.clear();
+        this.cells.addAll(newCells);
+
+        this.cells.forEach(cell -> cell.setBoard(this));
+    }
+
+    public void createNewTeam(String name) {
+        Team newTeam = Team.create(name);
+        this.teams.add(newTeam);
+        newTeam.setBoard(this);
+    }
+
+    public boolean tryValue(int row, int column, int value) {
+        if (row < 0 || row > 8 || column < 0 || column > 8 || value < 1 || value > 9) {
+            throw new IllegalArgumentException("Must be 0<=row,column<=8, 1<=value<=9");
+        }
+
+        return cells.stream()
+                .filter(c -> c.getId().getRow() == row && c.getId().getColumn() == column)
+                .findFirst()
+                .map(cell -> cell.getCorrectValue() == value)
+                .orElseThrow(() -> new IllegalStateException("Cell data is missing"));
+    }
 
     @Override
     public String getId() {

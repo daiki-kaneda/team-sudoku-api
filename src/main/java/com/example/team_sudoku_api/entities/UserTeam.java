@@ -34,6 +34,10 @@ public class UserTeam {
 
     private LocalDateTime joinedAt;
 
+    public void setTeam(Team team){
+        this.team=team;
+    }
+
     @Embeddable
     @EqualsAndHashCode
     public static class UserTeamId implements Serializable {

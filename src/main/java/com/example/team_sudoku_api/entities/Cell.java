@@ -36,6 +36,10 @@ public class Cell {
     @Max(value = 9)
     private int correctValue;
 
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
     @Data
     @Embeddable
     public static class CellId implements Serializable {

@@ -36,4 +36,20 @@ public class Team {
     @ManyToOne
     @JoinColumn(name = "board_id")
     private Board board;
+
+    public void setBoard(Board board){
+        this.board=board;
+    }
+
+    public void joinTeam(UserTeam userTeam){
+        this.userTeams.add(userTeam);
+        userTeam.setTeam(this);
+    }
+
+    public static Team create(String name){
+        Team team = new Team();
+        team.name=name;
+        team.createdAt=LocalDateTime.now();
+        return team;
+    }
 }
