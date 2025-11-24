@@ -2,6 +2,7 @@ package com.example.team_sudoku_api.entities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -54,6 +55,12 @@ public class Board extends BaseEntity<String> {
                 .findFirst()
                 .map(cell -> cell.getCorrectValue() == value)
                 .orElseThrow(() -> new IllegalStateException("Cell data is missing"));
+    }
+
+    public static Board create(){
+        Board board = new Board();
+        board.id=UUID.randomUUID().toString();
+        return board;
     }
 
     @Override
