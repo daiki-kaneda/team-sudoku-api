@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserTeam {
+public class UserTeam extends BaseEntity<UserTeam.UserTeamId> {
     @EmbeddedId
     private UserTeamId id;
 
@@ -34,17 +34,17 @@ public class UserTeam {
 
     private LocalDateTime joinedAt;
 
-    public void setTeam(Team team){
-        this.team=team;
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
-    public void setUser(User user){
-        this.user=user;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public static UserTeam create(String uid,String teamId){
+    public static UserTeam create(String uid, String teamId) {
         UserTeam userTeam = new UserTeam();
-        userTeam.id=UserTeamId.create(uid,teamId);
+        userTeam.id = UserTeamId.create(uid, teamId);
         return userTeam;
     }
 
@@ -62,5 +62,10 @@ public class UserTeam {
             id.teamId = teamId;
             return id;
         }
+    }
+
+    @Override
+    public UserTeamId getId() {
+        return id;
     }
 }

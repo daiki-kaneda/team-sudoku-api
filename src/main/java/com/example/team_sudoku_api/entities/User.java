@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "users")
-public class User {
+public class User extends BaseEntity<String> {
     @Id
     private String uid;
 
@@ -49,5 +49,10 @@ public class User {
         newUser.email = email;
         newUser.createdAt = LocalDateTime.now();
         return newUser;
+    }
+
+    @Override
+    public String getId() {
+        return uid;
     }
 }

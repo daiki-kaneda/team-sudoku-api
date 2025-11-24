@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserRole {
+public class UserRole extends BaseEntity<UserRole.UserRoleId> {
     @EmbeddedId
     private UserRoleId id;
 
@@ -54,5 +54,10 @@ public class UserRole {
             id.roleId = roleId;
             return id;
         }
+    }
+
+    @Override
+    public UserRoleId getId() {
+        return id;
     }
 }

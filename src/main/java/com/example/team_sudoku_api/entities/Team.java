@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Team {
+public class Team extends BaseEntity<String> {
     @Id
     private String id;
     @Size(min = 3, max = 20)
@@ -37,21 +37,26 @@ public class Team {
     @JoinColumn(name = "board_id")
     private Board board;
 
-    public void setBoard(Board board){
-        this.board=board;
+    public void setBoard(Board board) {
+        this.board = board;
     }
 
-    public void join(User user){
+    public void join(User user) {
         UserTeam userTeam = UserTeam.create(user.getUid(), id);
         this.userTeams.add(userTeam);
         userTeam.setTeam(this);
         userTeam.setUser(user);
     }
 
-    public static Team create(String name){
+    public static Team create(String name) {
         Team team = new Team();
-        team.name=name;
-        team.createdAt=LocalDateTime.now();
+        team.name = name;
+        team.createdAt = LocalDateTime.now();
         return team;
+    }
+
+    @Override
+    public String getId() {
+        return id;
     }
 }

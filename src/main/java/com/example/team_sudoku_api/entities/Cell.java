@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Cell {
+public class Cell extends BaseEntity<Cell.CellId> {
     @EmbeddedId
     private CellId id;
 
@@ -55,5 +55,10 @@ public class Cell {
         @Min(value = 0)
         @Max(value = 8)
         private int column;
+    }
+
+    @Override
+    public CellId getId() {
+        return id;
     }
 }
