@@ -39,9 +39,6 @@ public class UserTeam {
 
     private LocalDateTime joinedAt;
 
-    @OneToMany(mappedBy = "userTeam", cascade = CascadeType.PERSIST)
-    private List<Log> logs = new ArrayList<>();
-
     @Embeddable
     @EqualsAndHashCode
     public static class UserTeamId implements Serializable {

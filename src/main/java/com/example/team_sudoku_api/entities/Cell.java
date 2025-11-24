@@ -34,10 +34,6 @@ public class Cell {
     @MapsId("boardId")
     private Board board;
 
-    @OneToMany(mappedBy = "cell", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<Log> log = new ArrayList<>();
-
     @Min(value = 1)
     @Max(value = 9)
     @Column(name = "cell_value")
