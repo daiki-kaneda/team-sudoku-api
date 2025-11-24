@@ -29,19 +29,22 @@ public class User {
 
     private boolean isActive = true;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserTeam> userTeams = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserRole> userRoles = new ArrayList<>();
 
     public void addUserTeam(UserTeam userTeam) {
         this.userTeams.add(userTeam);
+        userTeam.setUser(this);
     }
 
     public void addUserRole(UserRole userRole) {
         this.userRoles.add(userRole);
+        userRole.setUser(this);
     }
 
     public static User createNewUser(String uid, String name, String email) {
