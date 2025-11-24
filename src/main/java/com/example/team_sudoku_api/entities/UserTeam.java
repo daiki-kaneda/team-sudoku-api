@@ -38,6 +38,16 @@ public class UserTeam {
         this.team=team;
     }
 
+    public void setUser(User user){
+        this.user=user;
+    }
+
+    public static UserTeam create(String uid,String teamId){
+        UserTeam userTeam = new UserTeam();
+        userTeam.id=UserTeamId.create(uid,teamId);
+        return userTeam;
+    }
+
     @Embeddable
     @EqualsAndHashCode
     public static class UserTeamId implements Serializable {

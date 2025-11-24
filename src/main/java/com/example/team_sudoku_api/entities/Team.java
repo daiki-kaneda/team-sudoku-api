@@ -41,9 +41,11 @@ public class Team {
         this.board=board;
     }
 
-    public void joinTeam(UserTeam userTeam){
+    public void join(User user){
+        UserTeam userTeam = UserTeam.create(user.getUid(), id);
         this.userTeams.add(userTeam);
         userTeam.setTeam(this);
+        userTeam.setUser(user);
     }
 
     public static Team create(String name){

@@ -45,6 +45,11 @@ public class Board extends BaseEntity<String> {
         newTeam.setBoard(this);
     }
 
+    public void joinTeam(String teamId,User user){
+        Team team = this.teams.stream().filter(t->t.getId().equals(teamId)).findFirst().orElseThrow();
+        team.join(user);
+    }
+
     public boolean tryValue(int row, int column, int value) {
         if (row < 0 || row > 8 || column < 0 || column > 8 || value < 1 || value > 9) {
             throw new IllegalArgumentException("Must be 0<=row,column<=8, 1<=value<=9");
