@@ -1,12 +1,6 @@
 package com.example.team_sudoku_api.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EmbeddedId;
@@ -14,7 +8,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
-import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.AccessLevel;
@@ -30,7 +23,7 @@ public class Cell {
     private CellId id;
 
     @ManyToOne
-    @JoinColumn(name = "board_id",referencedColumnName = "id")
+    @JoinColumn(name = "board_id", referencedColumnName = "id")
     @MapsId("boardId")
     private Board board;
 
