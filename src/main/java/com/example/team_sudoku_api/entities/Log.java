@@ -1,6 +1,7 @@
 package com.example.team_sudoku_api.entities;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import com.example.team_sudoku_api.entities.Cell.CellId;
 
@@ -35,6 +36,16 @@ public class Log extends BaseEntity<String> {
     @JoinColumn(name = "cell_row", referencedColumnName = "row_idx")
     @JoinColumn(name = "cell_column", referencedColumnName = "col_idx")
     private Cell cell;
+
+    public static Log create(boolean isCorrect, UserTeam userTeam, Cell cell) {
+        Log log = new Log();
+        log.id = UUID.randomUUID().toString();
+        log.createdAt = LocalDateTime.now();
+        log.result = isCorrect ? "success":"failure";
+        log.userTeam = userTeam;
+        log.cell = cell;
+        return log;
+    }
 
     @Override
     public String getId() {
