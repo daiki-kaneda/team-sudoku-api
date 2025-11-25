@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.team_sudoku_api.entities.Board;
 import com.example.team_sudoku_api.entities.Cell;
 import com.example.team_sudoku_api.entities.User;
+import com.example.team_sudoku_api.entities.Cell.CellId;
+import com.example.team_sudoku_api.entities.UserTeam.UserTeamId;
 import com.example.team_sudoku_api.repositories.BoardRepository;
 import com.example.team_sudoku_api.repositories.UserRepository;
 
@@ -16,10 +18,12 @@ import com.example.team_sudoku_api.repositories.UserRepository;
 public class BoardService {
     private BoardRepository boardRepository;
     private UserRepository userRepository;
+    private LogService logService;
 
-    public BoardService(BoardRepository boardRepository, UserRepository userRepository) {
+    public BoardService(BoardRepository boardRepository, UserRepository userRepository, LogService logService) {
         this.boardRepository = boardRepository;
         this.userRepository = userRepository;
+        this.logService = logService;
     }
 
     @Transactional
@@ -42,5 +46,12 @@ public class BoardService {
         User user = userRepository.findById(uid).orElseThrow();
         board.joinTeam(teamId, user);
         boardRepository.save(board);
+    }
+
+    @Transactional
+    public void tryValue(String boardId, UserTeamId userTeamId, CellId cellId,int value){
+        Board board = boardRepository.findById(boardId).orElseThrow();
+        boolean isCorrect = board.tryValue(cellId.getRow(), cellId.getColumn(), value);
+        logService.addLog(userTeamId, cellId, isCorrect);
     }
 }
