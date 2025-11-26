@@ -2,6 +2,7 @@ package com.example.team_sudoku_api.services;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class TeamQueryService {
         return teamQueryRepository.findJoinedTeamsByUserId(uid);
     }
 
-    public List<Team> getTeamsNameContainig(String name, Pageable pageable) {
+    public Page<Team> getTeamsNameContaining(String name, Pageable pageable) {
         return teamQueryRepository.findByNameContaining(name, pageable);
     }
 }
