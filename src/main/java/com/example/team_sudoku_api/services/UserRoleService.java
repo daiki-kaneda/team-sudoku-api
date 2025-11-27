@@ -16,7 +16,7 @@ public class UserRoleService {
     }
 
     public List<Role> getRolesByUid(String uid){
-        List<Role> roles = userRoleRepository.findDistinctByUserUid(uid);
+        List<Role> roles = userRoleRepository.findDistinctRolesByUid(uid);
         return roles;
     }
 }
