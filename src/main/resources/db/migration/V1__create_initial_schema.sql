@@ -1,5 +1,6 @@
 CREATE TABLE board (
     id VARCHAR(255) NOT NULL,
+    title VARCHAR(255) NOT NULL,
     PRIMARY KEY (id)
 );
 

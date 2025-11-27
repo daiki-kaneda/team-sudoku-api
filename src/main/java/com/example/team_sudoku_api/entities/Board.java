@@ -10,6 +10,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,8 @@ import lombok.NoArgsConstructor;
 public class Board extends BaseEntity<String> {
     @Id
     private String id;
+    @NotNull
+    private String title;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Cell> cells = new ArrayList<>();
