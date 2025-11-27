@@ -3,6 +3,7 @@ package com.example.team_sudoku_api.entities;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -50,6 +51,7 @@ public class Team extends BaseEntity<String> {
 
     public static Team create(String name) {
         Team team = new Team();
+        team.id = UUID.randomUUID().toString();
         team.name = name;
         team.createdAt = LocalDateTime.now();
         return team;
