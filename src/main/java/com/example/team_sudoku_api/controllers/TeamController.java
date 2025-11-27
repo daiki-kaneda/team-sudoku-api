@@ -52,7 +52,7 @@ public class TeamController {
         boardService.joinTeam(boardId,teamId,uid);
     }
 
-    @GetMapping("teams/")
+    @GetMapping("/teams")
     public Page<TeamDTO> getTeamsNameContaining(
         @RequestParam(required = false) String name,
         @PageableDefault(size = 20) Pageable pageable
