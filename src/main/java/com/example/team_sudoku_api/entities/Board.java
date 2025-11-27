@@ -42,10 +42,11 @@ public class Board extends BaseEntity<String> {
         this.cells.forEach(cell -> cell.setBoard(this));
     }
 
-    public void createNewTeam(String name) {
+    public String createNewTeam(String name) {
         Team newTeam = Team.create(name);
         this.teams.add(newTeam);
         newTeam.setBoard(this);
+        return newTeam.getId();
     }
 
     public void joinTeam(String teamId,User user){

@@ -34,10 +34,11 @@ public class BoardService {
     }
 
     @Transactional
-    public void createNewTeam(String boardId, String name) {
+    public String createNewTeam(String boardId, String name) {
         Board board = boardRepository.findById(boardId).orElseThrow();
-        board.createNewTeam(name);
+        String teamId = board.createNewTeam(name);
         boardRepository.save(board);
+        return teamId;
     }
 
     @Transactional
