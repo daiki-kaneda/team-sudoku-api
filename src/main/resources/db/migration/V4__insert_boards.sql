@@ -1,4 +1,4 @@
-INSERT INTO board (id, title) VALUES ("board1","湖北の冬と帯-1")
+INSERT INTO board (id, title) VALUES ('board1','湖北の冬と帯-1');
 
 INSERT INTO cell (board_id, row_idx, col_idx, cell_value, correct_value) VALUES
 -- Row 0 (1行目)
