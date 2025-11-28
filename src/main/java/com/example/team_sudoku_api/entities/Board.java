@@ -49,8 +49,8 @@ public class Board extends BaseEntity<String> {
         return newTeam.getId();
     }
 
-    public void joinTeam(String teamId,User user){
-        Team team = this.teams.stream().filter(t->t.getId().equals(teamId)).findFirst().orElseThrow();
+    public void joinTeam(String teamId, User user) {
+        Team team = this.teams.stream().filter(t -> t.getId().equals(teamId)).findFirst().orElseThrow();
         team.join(user);
     }
 
@@ -66,9 +66,10 @@ public class Board extends BaseEntity<String> {
                 .orElseThrow(() -> new IllegalStateException("Cell data is missing"));
     }
 
-    public static Board create(){
+    public static Board create(String title) {
         Board board = new Board();
-        board.id=UUID.randomUUID().toString();
+        board.id = UUID.randomUUID().toString();
+        board.title = title;
         return board;
     }
 

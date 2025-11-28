@@ -40,6 +40,15 @@ public class Cell extends BaseEntity<Cell.CellId> {
         this.board = board;
     }
 
+    public static Cell create(CellId id,Board board,Integer value,int correctValue){
+        Cell cell = new Cell();
+        cell.id=id;
+        cell.board=board;
+        cell.value=value;
+        cell.correctValue=correctValue;
+        return cell;
+    }
+
     @Data
     @Embeddable
     public static class CellId implements Serializable {
@@ -55,6 +64,14 @@ public class Cell extends BaseEntity<Cell.CellId> {
         @Min(value = 0)
         @Max(value = 8)
         private int column;
+
+        public static CellId create(String boardId,int row,int column){
+            CellId id = new CellId();
+            id.boardId=boardId;
+            id.row=row;
+            id.column=column;
+            return id;
+        }
     }
 
     @Override

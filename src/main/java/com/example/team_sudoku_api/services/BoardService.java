@@ -5,11 +5,11 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.team_sudoku_api.controllers.dto.BoardDTO;
 import com.example.team_sudoku_api.entities.Board;
 import com.example.team_sudoku_api.entities.Cell;
 import com.example.team_sudoku_api.entities.User;
-import com.example.team_sudoku_api.entities.Cell.CellId;
-import com.example.team_sudoku_api.entities.UserTeam.UserTeamId;
+import com.example.team_sudoku_api.entities.UserTeam;
 import com.example.team_sudoku_api.repositories.BoardRepository;
 import com.example.team_sudoku_api.repositories.UserRepository;
 
@@ -27,10 +27,19 @@ public class BoardService {
     }
 
     @Transactional
-    public Board createNewBoard(List<Cell> cells) {
-        Board newBoard = Board.create();
+    public void createNewBoard(BoardDTO boardDTO) {
+        Board newBoard = Board.create(boardDTO.title());
+        List<Cell> cells = boardDTO.cells().stream()
+                .map(c -> Cell.create(
+                        Cell.CellId.create(
+                                newBoard.getId(),
+                                c.row(), c.column()),
+                        newBoard,
+                        c.value(),
+                        c.correctValue()))
+                .toList();
         newBoard.setAllCells(cells);
-        return boardRepository.save(newBoard);
+        boardRepository.save(newBoard);
     }
 
     @Transactional
@@ -50,9 +59,11 @@ public class BoardService {
     }
 
     @Transactional
-    public void tryValue(String boardId, UserTeamId userTeamId, CellId cellId,int value){
+    public boolean tryValue(String boardId, String userId, String teamId, int row, int column, int value) {
         Board board = boardRepository.findById(boardId).orElseThrow();
-        boolean isCorrect = board.tryValue(cellId.getRow(), cellId.getColumn(), value);
-        logService.addLog(userTeamId, cellId, isCorrect);
+        boolean isCorrect = board.tryValue(row, column, value);
+        logService.addLog(UserTeam.UserTeamId.create(userId, teamId), Cell.CellId.create(boardId, row, column),
+                isCorrect);
+        return isCorrect;
     }
 }
