@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.team_sudoku_api.controllers.dto.BoardDTO;
+import com.example.team_sudoku_api.controllers.dto.CellDTO;
 import com.example.team_sudoku_api.entities.Board;
 import com.example.team_sudoku_api.entities.Cell;
 import com.example.team_sudoku_api.entities.User;
@@ -67,5 +68,13 @@ public class BoardService {
         logService.addLog(UserTeam.UserTeamId.create(userId, teamId), Cell.CellId.create(boardId, row, column),
                 isCorrect);
         return isCorrect;
+    }
+
+    public BoardDTO getBoardById(String id) {
+        Board board = boardRepository.findById(id).orElseThrow();
+        List<CellDTO> cells = board.getCells().stream()
+                .map(c -> new CellDTO(c.getId().getRow(), c.getId().getColumn(), c.getValue(), c.getCorrectValue()))
+                .toList();
+        return new BoardDTO(board.getId(), board.getTitle(), cells);
     }
 }
