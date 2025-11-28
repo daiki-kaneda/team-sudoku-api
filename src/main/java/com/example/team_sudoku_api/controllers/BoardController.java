@@ -15,6 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api")
+@EnableMethodSecurity
 public class BoardController {
     private BoardService boardService;
 
@@ -57,7 +60,10 @@ public class BoardController {
 
     @PostMapping("/boards")
     @PreAuthorize("hasRole('ADMIN')")
-    public BoadIdDTO createNewBoard(@RequestBody CreateBoardRequest boardDTO) {
+    public BoadIdDTO createNewBoard(
+        Authentication authentication,
+        @RequestBody CreateBoardRequest boardDTO) {
+        System.out.println("現在の権限: " + authentication.getAuthorities());
         String boardId = boardService.createNewBoard(boardDTO);
         return new BoadIdDTO(boardId);
     }
