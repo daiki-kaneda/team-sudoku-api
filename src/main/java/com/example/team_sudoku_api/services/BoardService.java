@@ -27,7 +27,7 @@ public class BoardService {
     }
 
     @Transactional
-    public void createNewBoard(BoardDTO boardDTO) {
+    public String createNewBoard(BoardDTO boardDTO) {
         Board newBoard = Board.create(boardDTO.title());
         List<Cell> cells = boardDTO.cells().stream()
                 .map(c -> Cell.create(
@@ -40,6 +40,8 @@ public class BoardService {
                 .toList();
         newBoard.setAllCells(cells);
         boardRepository.save(newBoard);
+
+        return newBoard.getId();
     }
 
     @Transactional

@@ -3,17 +3,15 @@ package com.example.team_sudoku_api.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.team_sudoku_api.controllers.dto.BoadIdDTO;
 import com.example.team_sudoku_api.controllers.dto.BoardDTO;
 import com.example.team_sudoku_api.controllers.dto.TryValueRequest;
 import com.example.team_sudoku_api.controllers.dto.TryValueResponse;
-import com.example.team_sudoku_api.entities.Cell;
 import com.example.team_sudoku_api.services.BoardService;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -39,9 +37,10 @@ public class BoardController {
     }
 
     @PostMapping("/boards")
-    @PreAuthorize("hasRole(ADMIN)")
-    public void createNewBoard(@RequestBody BoardDTO board) {
-        boardService.createNewBoard(board);
+    @PreAuthorize("hasRole('ADMIN')")
+    public BoadIdDTO createNewBoard(@RequestBody BoardDTO board) {
+        String boardId = boardService.createNewBoard(board);
+        return new BoadIdDTO(boardId);
     }
 
 }
