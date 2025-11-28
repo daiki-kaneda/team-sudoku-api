@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.team_sudoku_api.controllers.dto.BoardDTO;
+import com.example.team_sudoku_api.controllers.dto.BoardSummaryDTO;
 import com.example.team_sudoku_api.controllers.dto.CellDTO;
+import com.example.team_sudoku_api.controllers.dto.CreateBoardRequest;
 import com.example.team_sudoku_api.entities.Board;
 import com.example.team_sudoku_api.entities.Cell;
 import com.example.team_sudoku_api.entities.User;
@@ -30,7 +32,7 @@ public class BoardService {
     }
 
     @Transactional
-    public String createNewBoard(BoardDTO boardDTO) {
+    public String createNewBoard(CreateBoardRequest boardDTO) {
         Board newBoard = Board.create(boardDTO.title());
         List<Cell> cells = boardDTO.cells().stream()
                 .map(c -> Cell.create(
@@ -80,16 +82,16 @@ public class BoardService {
         return new BoardDTO(board.getId(), board.getTitle(), cells);
     }
 
-    public Page<BoardDTO> getBoardsByTitleContaining(String title,Pageable pageable){
+    public Page<BoardSummaryDTO> getBoardsByTitleContaining(String title,Pageable pageable){
         return boardRepository.findByTitleContaining(title,pageable)
-        .map(b->new BoardDTO(
+        .map(b->new BoardSummaryDTO(
             b.getId(),
-            b.getTitle(),
-            b.getCells().stream().map(this::getCellDTO).toList()
+            b.getTitle()
         ));
     }
 
     private CellDTO getCellDTO(Cell cell){
-        return new CellDTO(cell.getId().getRow(), cell.getId().getColumn(), cell.getValue(), cell.getCorrectValue());
+        boolean isFixed = cell.getValue()!=null;
+        return new CellDTO(cell.getId().getRow(), cell.getId().getColumn(), cell.getValue(), isFixed);
     }
 }

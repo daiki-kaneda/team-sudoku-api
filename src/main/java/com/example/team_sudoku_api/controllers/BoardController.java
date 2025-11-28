@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.team_sudoku_api.controllers.dto.BoadIdDTO;
 import com.example.team_sudoku_api.controllers.dto.BoardDTO;
+import com.example.team_sudoku_api.controllers.dto.BoardSummaryDTO;
+import com.example.team_sudoku_api.controllers.dto.CreateBoardRequest;
 import com.example.team_sudoku_api.controllers.dto.TryValueRequest;
 import com.example.team_sudoku_api.controllers.dto.TryValueResponse;
 import com.example.team_sudoku_api.services.BoardService;
@@ -36,7 +38,7 @@ public class BoardController {
     }
 
     @GetMapping("/boards")
-    public Page<BoardDTO> getBoardsTitleContaining(@RequestParam(required = false) String title,
+    public Page<BoardSummaryDTO> getBoardsTitleContaining(@RequestParam(required = false) String title,
             @PageableDefault(size = 20) Pageable pageable) {
         return boardService.getBoardsByTitleContaining(title, pageable);
     }
@@ -54,8 +56,8 @@ public class BoardController {
 
     @PostMapping("/boards")
     @PreAuthorize("hasRole('ADMIN')")
-    public BoadIdDTO createNewBoard(@RequestBody BoardDTO board) {
-        String boardId = boardService.createNewBoard(board);
+    public BoadIdDTO createNewBoard(@RequestBody CreateBoardRequest boardDTO) {
+        String boardId = boardService.createNewBoard(boardDTO);
         return new BoadIdDTO(boardId);
     }
 
