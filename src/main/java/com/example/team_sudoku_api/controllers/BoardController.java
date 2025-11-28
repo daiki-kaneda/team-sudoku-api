@@ -40,7 +40,8 @@ public class BoardController {
     @GetMapping("/boards")
     public Page<BoardSummaryDTO> getBoardsTitleContaining(@RequestParam(required = false) String title,
             @PageableDefault(size = 20) Pageable pageable) {
-        return boardService.getBoardsByTitleContaining(title, pageable);
+        String keyword = title != null ? title : "";
+        return boardService.getBoardsByTitleContaining(keyword, pageable);
     }
 
     @PostMapping("/boards/{boardId}/teams/{teamId}/try")
