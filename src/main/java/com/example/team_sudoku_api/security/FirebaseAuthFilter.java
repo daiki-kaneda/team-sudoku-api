@@ -34,13 +34,13 @@ public class FirebaseAuthFilter extends OncePerRequestFilter {
         try {
             Authentication auth = authProvider.createAuthentication(idToken);
             SecurityContextHolder.getContext().setAuthentication(auth);
+            filterChain.doFilter(request, response);
         } catch (FirebaseAuthException e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
             response.getWriter().write(String.format("{\"error\":\"%s\"}", e.getMessage()));
+            return;
         }
-
-        filterChain.doFilter(request, response);
     }
 
     private String resolveToken(HttpServletRequest request) {
