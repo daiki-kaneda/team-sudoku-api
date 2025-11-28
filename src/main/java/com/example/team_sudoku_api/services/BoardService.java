@@ -2,6 +2,8 @@ package com.example.team_sudoku_api.services;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,8 +75,21 @@ public class BoardService {
     public BoardDTO getBoardById(String id) {
         Board board = boardRepository.findById(id).orElseThrow();
         List<CellDTO> cells = board.getCells().stream()
-                .map(c -> new CellDTO(c.getId().getRow(), c.getId().getColumn(), c.getValue(), c.getCorrectValue()))
+                .map(this::getCellDTO)
                 .toList();
         return new BoardDTO(board.getId(), board.getTitle(), cells);
+    }
+
+    public Page<BoardDTO> getBoardsByTitleContaining(String title,Pageable pageable){
+        return boardRepository.findByTitleContaining(title,pageable)
+        .map(b->new BoardDTO(
+            b.getId(),
+            b.getTitle(),
+            b.getCells().stream().map(this::getCellDTO).toList()
+        ));
+    }
+
+    private CellDTO getCellDTO(Cell cell){
+        return new CellDTO(cell.getId().getRow(), cell.getId().getColumn(), cell.getValue(), cell.getCorrectValue());
     }
 }

@@ -9,6 +9,9 @@ import com.example.team_sudoku_api.controllers.dto.TryValueRequest;
 import com.example.team_sudoku_api.controllers.dto.TryValueResponse;
 import com.example.team_sudoku_api.services.BoardService;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 
 @RestController
 @RequestMapping("/api")
@@ -32,7 +34,12 @@ public class BoardController {
     public BoardDTO getBoard(@PathVariable String boardId) {
         return boardService.getBoardById(boardId);
     }
-    
+
+    @GetMapping("/boards")
+    public Page<BoardDTO> getBoardsTitleContaining(@RequestParam(required = false) String title,
+            @PageableDefault(size = 20) Pageable pageable) {
+        return boardService.getBoardsByTitleContaining(title, pageable);
+    }
 
     @PostMapping("/boards/{boardId}/teams/{teamId}/try")
     public TryValueResponse tryValue(
