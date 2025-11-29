@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.team_sudoku_api.controllers.dto.CreateTeamRequest;
 import com.example.team_sudoku_api.controllers.dto.CreateTeamResponse;
 import com.example.team_sudoku_api.controllers.dto.LogDataDTO;
+import com.example.team_sudoku_api.controllers.dto.SolvedCellDTO;
 import com.example.team_sudoku_api.controllers.dto.TeamDTO;
 import com.example.team_sudoku_api.services.BoardService;
 import com.example.team_sudoku_api.services.LogService;
@@ -69,6 +70,13 @@ public class TeamController {
         @PageableDefault(size = 20) Pageable pageable
     ) {
         return logService.getLogsByTeamId(teamId, pageable);
+    }
+
+    @GetMapping("/teams/{teamId}/board-state")
+    public List<SolvedCellDTO> getBoardStateByTeamId(
+        @PathVariable String teamId
+    ) {
+        return logService.getTeamBoardStateByTeamId(teamId);
     }
 
     @GetMapping("teams/mine")

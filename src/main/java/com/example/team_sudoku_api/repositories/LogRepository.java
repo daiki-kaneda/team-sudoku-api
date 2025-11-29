@@ -1,5 +1,7 @@
 package com.example.team_sudoku_api.repositories;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,4 +17,14 @@ public interface LogRepository extends JpaRepository<Log, String> {
             "JOIN FETCH l.cell " +
             "WHERE ut.id.teamId = :teamId", countQuery = "SELECT COUNT(l) FROM Log l WHERE l.userTeam.id.teamId = :teamId")
     Page<Log> findByTeamId(@Param("teamId") String teamId, Pageable pageable);
+
+    @Query("SELECT l FROM Log l " +
+            "JOIN FETCH l.userTeam ut " +
+            "JOIN FETCH ut.user " +
+            "JOIN FETCH l.cell " +
+            "WHERE ut.id.teamId = :teamId " +
+            "AND l.result = 'success' " +
+            "ORDER BY l.createdAt ASC"
+        )
+    List<Log> findByTeamIdAndSuccessResult(@Param("teamId") String teamId);
 }

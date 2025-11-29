@@ -1,11 +1,17 @@
 package com.example.team_sudoku_api.services;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.team_sudoku_api.controllers.dto.LogDataDTO;
+import com.example.team_sudoku_api.controllers.dto.SolvedCellDTO;
 import com.example.team_sudoku_api.entities.Cell;
 import com.example.team_sudoku_api.entities.Log;
 import com.example.team_sudoku_api.entities.User;
@@ -50,5 +56,28 @@ public class LogService {
                             cell.getId().getColumn(),
                             l.getResult().equals("success"));
                 });
+    }
+
+    public List<SolvedCellDTO> getTeamBoardStateByTeamId(String teamId){
+        List<Log> logs = logRepository.findByTeamIdAndSuccessResult(teamId);
+        Map<String, SolvedCellDTO> latestStateMap = new HashMap<>();
+
+        for (Log l : logs) {
+            User user = l.getUserTeam().getUser();
+            Cell cell = l.getCell();
+            
+            String key = cell.getId().getRow() + "-" + cell.getId().getColumn();
+            
+            SolvedCellDTO dto = new SolvedCellDTO(
+                user.getName(),
+                l.getCreatedAt(),
+                cell.getId().getRow(),
+                cell.getId().getColumn(),
+                cell.getCorrectValue() 
+            );
+
+            latestStateMap.put(key, dto);
+        }
+        return new ArrayList<>(latestStateMap.values());
     }
 }
