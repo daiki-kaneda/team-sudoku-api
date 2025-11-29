@@ -27,7 +27,9 @@ public class UserController {
         User user = userService.loadOrCreateUser(request.idToken());
         return ResponseEntity.ok(new UserLoginResponse(
                 user.getUid(),
-                "Login success!"));
+                "Login success! Your roles are "
+                        + user.getUserRoles().stream().map(ur -> ur.getRole().getRoleName()).toList().toString()
+                    + "\nYour email is "+user.getEmail()));
     }
 
 }
