@@ -5,8 +5,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.team_sudoku_api.controllers.dto.CreateTeamRequest;
 import com.example.team_sudoku_api.controllers.dto.CreateTeamResponse;
+import com.example.team_sudoku_api.controllers.dto.LogDataDTO;
 import com.example.team_sudoku_api.controllers.dto.TeamDTO;
 import com.example.team_sudoku_api.services.BoardService;
+import com.example.team_sudoku_api.services.LogService;
 import com.example.team_sudoku_api.services.TeamQueryService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,10 +30,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class TeamController {
     private BoardService boardService;
     private TeamQueryService teamQueryService;
+    private LogService logService;
 
-    public TeamController(BoardService boardService,TeamQueryService teamQueryService){
+    public TeamController(BoardService boardService,TeamQueryService teamQueryService,LogService logService){
         this.boardService=boardService;
         this.teamQueryService=teamQueryService;
+        this.logService=logService;
     }
 
     @PostMapping("/boards/{boardId}/teams")
@@ -58,6 +62,13 @@ public class TeamController {
         @PageableDefault(size = 20) Pageable pageable
     ) {
         return teamQueryService.getTeamsNameContaining(name!=null ? name:"", pageable);
+    }
+    @GetMapping("/teams/{teamId}/logs")
+    public Page<LogDataDTO> getLogsByTeamId(
+        @PathVariable String teamId,
+        @PageableDefault(size = 20) Pageable pageable
+    ) {
+        return logService.getLogsByTeamId(teamId, pageable);
     }
 
     @GetMapping("teams/mine")
