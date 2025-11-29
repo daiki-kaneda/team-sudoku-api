@@ -10,11 +10,11 @@ VALUES (
 INSERT INTO user_role (user_id, role_id)
 VALUES (
     '${admin.uid}',
-    (SELECT id FROM role WHERE role_name = 'ROLE_ADMIN')
+    (SELECT id FROM roles WHERE role_name = 'ROLE_ADMIN')
 );
 
 INSERT INTO user_role (user_id, role_id)
 VALUES (
     '${admin.uid}',
-    (SELECT id FROM role WHERE role_name = 'ROLE_USER')
+    (SELECT id FROM roles WHERE role_name = 'ROLE_USER')
 );
