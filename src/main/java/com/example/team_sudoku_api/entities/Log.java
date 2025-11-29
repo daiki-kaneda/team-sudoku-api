@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinColumns;
@@ -25,14 +26,14 @@ public class Log extends BaseEntity<String> {
     @NotNull
     private String result; // success,failure
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumns({
             @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
             @JoinColumn(name = "team_id", referencedColumnName = "team_id")
     })
     private UserTeam userTeam;
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumns({
             @JoinColumn(name = "cell_board_id", referencedColumnName = "board_id"),
             @JoinColumn(name = "cell_row", referencedColumnName = "row_idx"),

@@ -5,6 +5,7 @@ import java.io.Serializable;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
@@ -20,12 +21,12 @@ public class UserRole extends BaseEntity<UserRole.UserRoleId> {
     @EmbeddedId
     private UserRoleId id;
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "uid")
     @MapsId("userId")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     @MapsId("roleId")
     private Role role;
