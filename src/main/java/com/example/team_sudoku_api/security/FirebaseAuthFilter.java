@@ -26,11 +26,11 @@ public class FirebaseAuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        if (request.getRequestURI().startsWith("/auth/")) {
+        String idToken = resolveToken(request);
+        if (idToken == null) {
             filterChain.doFilter(request, response);
             return;
         }
-        String idToken = resolveToken(request);
         try {
             Authentication auth = authProvider.createAuthentication(idToken);
             SecurityContextHolder.getContext().setAuthentication(auth);
@@ -45,6 +45,9 @@ public class FirebaseAuthFilter extends OncePerRequestFilter {
 
     private String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
+        if (bearerToken == null) {
+            return null;
+        }
         try {
             return bearerToken.substring("Bearer ".length());
         } catch (IndexOutOfBoundsException e) {
