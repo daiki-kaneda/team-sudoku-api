@@ -18,6 +18,8 @@ import com.example.team_sudoku_api.entities.UserTeam;
 import com.example.team_sudoku_api.repositories.BoardRepository;
 import com.example.team_sudoku_api.repositories.UserRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 @Transactional(readOnly = true)
 public class BoardService {
@@ -51,7 +53,7 @@ public class BoardService {
 
     @Transactional
     public String createNewTeam(String boardId, String name) {
-        Board board = boardRepository.findById(boardId).orElseThrow();
+        Board board = boardRepository.findById(boardId).orElseThrow(()->new EntityNotFoundException());
         String teamId = board.createNewTeam(name);
         boardRepository.save(board);
         return teamId;
@@ -59,15 +61,15 @@ public class BoardService {
 
     @Transactional
     public void joinTeam(String boardId, String teamId, String uid) {
-        Board board = boardRepository.findById(boardId).orElseThrow();
-        User user = userRepository.findById(uid).orElseThrow();
+        Board board = boardRepository.findById(boardId).orElseThrow(()->new EntityNotFoundException());
+        User user = userRepository.findById(uid).orElseThrow(()->new EntityNotFoundException());
         board.joinTeam(teamId, user);
         boardRepository.save(board);
     }
 
     @Transactional
     public boolean tryValue(String boardId, String userId, String teamId, int row, int column, int value) {
-        Board board = boardRepository.findById(boardId).orElseThrow();
+        Board board = boardRepository.findById(boardId).orElseThrow(()->new EntityNotFoundException());
         boolean isCorrect = board.tryValue(row, column, value);
         logService.addLog(UserTeam.UserTeamId.create(userId, teamId), Cell.CellId.create(boardId, row, column),
                 isCorrect);
@@ -75,7 +77,7 @@ public class BoardService {
     }
 
     public BoardDTO getBoardById(String id) {
-        Board board = boardRepository.findById(id).orElseThrow();
+        Board board = boardRepository.findById(id).orElseThrow(()->new EntityNotFoundException());
         List<CellDTO> cells = board.getCells().stream()
                 .map(this::getCellDTO)
                 .toList();

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
@@ -50,7 +51,7 @@ public class Board extends BaseEntity<String> {
     }
 
     public void joinTeam(String teamId, User user) {
-        Team team = this.teams.stream().filter(t -> t.getId().equals(teamId)).findFirst().orElseThrow();
+        Team team = this.teams.stream().filter(t -> t.getId().equals(teamId)).findFirst().orElseThrow(()->new EntityNotFoundException());
         team.join(user);
     }
 

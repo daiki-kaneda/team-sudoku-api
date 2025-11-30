@@ -22,6 +22,8 @@ import com.example.team_sudoku_api.repositories.CellQueryRepository;
 import com.example.team_sudoku_api.repositories.LogRepository;
 import com.example.team_sudoku_api.repositories.UserTeamQueryRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 @Transactional(readOnly = true)
 public class LogService {
@@ -38,8 +40,8 @@ public class LogService {
 
     @Transactional
     public void addLog(UserTeamId userTeamId, CellId cellId, boolean isCorrect) {
-        UserTeam userTeam = userTeamQueryRepository.findById(userTeamId).orElseThrow();
-        Cell cell = cellQueryRepository.findById(cellId).orElseThrow();
+        UserTeam userTeam = userTeamQueryRepository.findById(userTeamId).orElseThrow(()->new EntityNotFoundException());
+        Cell cell = cellQueryRepository.findById(cellId).orElseThrow(()->new EntityNotFoundException());
         Log newLog = Log.create(isCorrect, userTeam, cell);
         logRepository.save(newLog);
     }
