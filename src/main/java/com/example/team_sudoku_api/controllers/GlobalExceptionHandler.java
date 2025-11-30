@@ -76,7 +76,7 @@ ProblemDetail problem = ProblemDetail.forStatusAndDetail(
     // 予期せぬシステムエラー
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleAllException(Exception e){
-        log.error("Unexpected error");
+        log.error("Unexpected error:{}",e.getMessage());
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(
             HttpStatus.INTERNAL_SERVER_ERROR,
             "システムエラーが発生しました。管理者にお問い合わせください。"
