@@ -3,7 +3,7 @@ VALUES (
     '${admin.uid}',
     '${admin.name}',
     '${admin.email}',
-    CURRENT_TIMESTAMP(),
+    CURRENT_TIMESTAMP,
     TRUE
 );
 
