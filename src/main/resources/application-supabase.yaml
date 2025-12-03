@@ -1,3 +1,4 @@
+# ./mvnw spring-boot:run -Dspring-boot.run.profiles=supabaseでこの設定ファイルを適用して実行
 spring:
   datasource:
     url: jdbc:postgresql://${SUPABASE_DB_HOST}:5432/postgres?sslmode=require
